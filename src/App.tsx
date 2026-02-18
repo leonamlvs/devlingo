@@ -1,29 +1,31 @@
-import { useEffect, useState } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import LoadingScreen from "./components/LoadingScreen";
-import Login from "./pages/Login";
-import Signup from "./pages/SignUp";
+import { useEffect, useState } from 'react'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import LoadingScreen from './components/LoadingScreen'
+import ProtectedRoute from './components/ProtectedRoute'
+import { Home } from './pages/Home'
+import Login from './pages/Login'
+import Signup from './pages/SignUp'
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [isFadingOut, setIsFadingOut] = useState(false);
+  const [isLoading, setIsLoading] = useState(true)
+  const [isFadingOut, setIsFadingOut] = useState(false)
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsFadingOut(true);
+      setIsFadingOut(true)
 
       const FadeTimer = setTimeout(() => {
-        setIsLoading(false);
-      }, 600);
+        setIsLoading(false)
+      }, 600)
 
-      return () => clearTimeout(FadeTimer);
-    }, 2500);
+      return () => clearTimeout(FadeTimer)
+    }, 2500)
 
-    return () => clearTimeout(timer);
-  }, []);
+    return () => clearTimeout(timer)
+  }, [])
 
   if (isLoading) {
-    return <LoadingScreen isFadingOut={isFadingOut} />;
+    return <LoadingScreen isFadingOut={isFadingOut} />
   }
 
   return (
@@ -31,10 +33,20 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
-  );
+  )
 }
 
-export default App;
+export default App
